@@ -49,5 +49,5 @@ else:
     cmds = file.read()
 
 keyboard.send(Keycode.CONTROL, Keycode.ALT, Keycode.T) # open a terminal(linux, OSX)
-sleep(1)
-layout.write(cmds)
+sleep(4)
+layout.write(cmds+"\n")
