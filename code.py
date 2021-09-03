@@ -6,6 +6,13 @@ from time import sleep
 from sys import exit
 import usb_hid
 import board
+import json
+
+
+def error():
+    for i in range(1, 8):
+        led.value = True
+        sleep(1)
 
 led = dgio.DigitalInOut(board.LED)
 button = dgio.DigitalInOut(board.GP0)
@@ -23,31 +30,47 @@ def off():
 
 
 for s in range(1, 3):
-    if listener.value: # read the button value for a while
+    if listener.value: # read the button value for a while(Kill switch)
         off()
     	exit()
     sleep(1)
 
+
 keyboard = Keyboard(usb_hid.devices)
 layout = KeyboardLayoutUS(keyboard)
 
+def wininit():
+    keyboard.send(Keycode.WINDOWS, Keycode.R)
+    sleep(1.5)
+    layout.write("cmd\n")
 
+def unixinit():
+    keyboard.send(Keycode.CONTROL, Keycode.ALT, Keycode.T)
 
-def error():
-    for i in range(1, 8):
-        led.value = True
-        sleep(1)
-
-cmds = ''
 
 try:
-    file = open('commands.txt', 'r')
+    cmds = open('commands.txt', 'r')
+except:
+    error()
+    exit()
+
+
+try:
+    file = open("config.json", "r")
 except:
     error()
     exit()
 else:
-    cmds = file.read()
+    conf = file.read()
+    conf = json.loads(conf.lower())
+    if conf['os'] == "win":
+        wininit()
+    elif conf['os'] == "unix":
+        unixinit()
 
-keyboard.send(Keycode.CONTROL, Keycode.ALT, Keycode.T) # open a terminal(linux, OSX)
-sleep(4)
-layout.write(cmds+"\n")
+
+sleep(3.5)
+for i in cmds:
+    layout.write(i)
+    if i[-1] != "\n":
+        layout.write("\n")

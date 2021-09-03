@@ -1,7 +1,6 @@
 #!/usr/bin/bash
 
 ROOT_PICO_PATH="/media/$(whoami)/CIRCUITPY"
-SECONDS=10
 
 if [ -d "$ROOT_PICO_PATH/lib/adafruit_hid/" ]
 then
@@ -34,12 +33,28 @@ else
 
 fi
 
+echo -e "\n\e[1;36m[1]Windows\n\e[1;33m[2]Linux/Unix(default)\n\n"
+echo -ne "\e[0;35mChoose your target's OS: "
+read CHOICE
+
+if [[ $CHOICE  == "1" ]]
+then
+  OS="win"
+else
+  OS="unix"
+fi
+
+echo -e "{
+  \"os\": \"$OS\"\n
+}" > config.json
+
 
 if [ -d $ROOT_PICO_PATH ]
 then
   echo -e "\e[1;33m🔴 Copying the code🔴"
   cp code.py $ROOT_PICO_PATH
   cp commands.txt $ROOT_PICO_PATH
+  cp config.json $ROOT_PICO_PATH
 else
   echo -e "\e[1;31mPico is not connected. Please connect the bord and try again"
   exit
