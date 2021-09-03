@@ -26,4 +26,10 @@ sudo ./install.sh
 This push button acts as a kill switch. Hold this button before plugging in the board for about 3 seconds. If the led turned on , it means that the program stopped.
 
 
-> ⚠ currently only linux/unix based operating systems are supported for the script.
+
+###### LED Status
+
+|Status| Action |
+--- | --- |
+|Fast Blink(11.111ᵇˡᶦⁿᵏ/ˢ)| Kill switch function|
+|Slow Blink(1ᵇˡᶦⁿᵏ/ˢ)| Error|
